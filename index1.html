@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPI Payment QR Generator</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+
+background:linear-gradient(
+-45deg,
+#ff0000,
+#ff7b00,
+#ffee00,
+#00ff00,
+#00e1ff,
+#004cff,
+#b700ff
+);
+
+background-size:400% 400%;
+animation:rainbow 12s ease infinite;
+}
+
+@keyframes rainbow{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.container{
+width:100%;
+max-width:500px;
+background:rgba(255,255,255,.95);
+padding:25px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+h1{
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:2px solid #ddd;
+border-radius:10px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+background:#0072ff;
+color:#fff;
+}
+
+#qrcode{
+margin-top:20px;
+display:flex;
+justify-content:center;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>💸 UPI Payment QR</h1>
+
+<input type="text" id="upi" placeholder="UPI ID (example@upi)">
+<input type="text" id="name" placeholder="UPI Name">
+<input type="text" id="number" placeholder="Number">
+<input type="number" id="amount" placeholder="Amount">
+<input type="text" id="note" placeholder="Payment Note (Optional)">
+
+<button onclick="generateQR()">Generate Payment QR</button>
+
+<div id="qrcode"></div>
+
+</div>
+
+<script>
+
+function generateQR(){
+
+let upi=document.getElementById("upi").value;
+let name=document.getElementById("name").value;
+let amount=document.getElementById("amount").value;
+let note=document.getElementById("note").value;
+
+if(!upi || !name || !amount){
+alert("UPI ID, Name aur Amount bharo");
+return;
+}
+
+let upiLink =
+`upi://pay?pa=${encodeURIComponent(upi)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&tn=${encodeURIComponent(note)}&cu=INR`;
+
+document.getElementById("qrcode").innerHTML="";
+
+new QRCode(document.getElementById("qrcode"),{
+text:upiLink,
+width:250,
+height:250
+});
+}
+
+</script>
+
+</body>
+</html>
